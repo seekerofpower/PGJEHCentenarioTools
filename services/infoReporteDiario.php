@@ -1,4 +1,6 @@
 <?php
+header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
+header('Content-Disposition: attachment; filename=infoReporteDiario.xls');
 require_once("server.php");
 // ESTP CON EL TIEMPO CAMBAIRLO A BD
 $conexionesDistritos = array
@@ -22,15 +24,19 @@ $conexionesDistritos = array
     "METZTITLAN"=>  "172.16.194.11"
 );
 
-$fecha="05 de enero del 2021";
+$fecha="06 de enero del 2021";
 $sqlDelitos="SELECT 
 N.nucg AS NUC
 ,D.Nombre as agencia
 ,RH.FechaReporte
 ,RDH.DelitoEspecifico
 ,CD.Nombre as delito
-,A.Clave as area
-,CD.AltoImpacto
+,A.Nombre as area
+,A.Clave as clavearea
+,(CASE 
+        WHEN (CD.AltoImpacto = 1) THEN 'ALTO'
+                                  ELSE 'BAJO' 
+    END) as Impacto
 FROM NUC N
 LEFT JOIN CAT_RHECHO RH ON n.idNuc = RH.NucId
 LEFT JOIN C_DISTRITO D ON N.DistritoId= D.IdDistrito
@@ -40,12 +46,12 @@ LEFT JOIN C_AGENCIA A ON N.AgenciaId= A.IdAgencia
 WHERE RH.FechaReporte=:FECHA"
 ;
 echo "<table>";
-echo "<thead><tr><td>NUC</td><td>Agencia</td><td>Fecha Reporte</td><td>Delito Especifico</td><td>Delito</td><td>Area</td><td>Nivel Impacto</td></tr></thead>";
+echo "<thead><tr><td>NUC</td><td>Agencia</td><td>Fecha Reporte</td><td>Delito Especifico</td><td>Delito</td><td>Area</td><td>Clave Area</td><td>Nivel Impacto</td></tr></thead>";
 echo "<tbody>";
 
 foreach($conexionesDistritos as $distrito => $direccion)
 {
-    echo "<tr><td>".$distrito."</td></tr>";
+    //echo "<tr><td>".$distrito."</td></tr>";
 
     $server=GetServerConection($direccion);
     
@@ -59,7 +65,7 @@ foreach($conexionesDistritos as $distrito => $direccion)
         
             while($grid=$qReporte->fetch(PDO::FETCH_ASSOC))
             {
-                echo "<tr><td>".$grid['NUC']."</td><td>".$grid['agencia']."</td><td>".$grid['FechaReporte']."</td><td>".$grid['DelitoEspecifico']."</td><td>".$grid['delito']."</td><td>".$grid['area']."</td><td>".$grid['AltoImpacto']."</td></tr>";
+                print utf8_decode( "<tr><td>".$grid['NUC']."</td><td>".$grid['agencia']."</td><td>".$grid['FechaReporte']."</td><td>".$grid['DelitoEspecifico']."</td><td>".$grid['delito']."</td><td>".$grid['area']."</td><td>".$grid['aclavearearea']."</td><td>".$grid['Impacto']."</td></tr>");
             }
         
     }

@@ -1,7 +1,8 @@
 <?php
 	function GetServerConection($rutaServidor){
-		$contraseña = "siigpprootsql";
-		$usuario = "SDgr%1A1";
+		
+		$usuario = "siigpprootsql";
+		$contraseña = "SDgr%1A1";
 		$nombreBaseDeDatos = "CENTENARIO_BD";
 		# Puede ser 127.0.0.1 o el nombre de tu equipo; o la IP de un servidor remoto
 		try {
