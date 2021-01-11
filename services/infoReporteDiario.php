@@ -24,7 +24,7 @@ $conexionesDistritos = array
     "METZTITLAN"=>  "172.16.194.11"
 );
 
-$fecha="07 de enero del 2021";
+$fecha="10 de enero del 2021";
 $sqlDelitos="SELECT 
 N.nucg AS NUC
 ,D.Nombre as agencia
