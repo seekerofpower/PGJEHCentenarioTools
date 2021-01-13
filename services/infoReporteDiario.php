@@ -23,30 +23,44 @@ $conexionesDistritos = array
     "JACALA"=>  "172.16.193.11",
     "METZTITLAN"=>  "172.16.194.11"
 );
-
-$fecha="10 de enero del 2021";
+$fechaInicio=filter_input(INPUT_POST, 'fechainicio', FILTER_SANITIZE_STRING)." 00:00:00";
+$fechaFinal=filter_input(INPUT_POST, 'fechafin', FILTER_SANITIZE_STRING)." 23:59:59";;
 $sqlDelitos="SELECT 
 N.nucg AS NUC
 ,D.Nombre as agencia
-,RH.FechaReporte
+,RA.FechaHoraRegistro as FechaReporte
 ,RDH.DelitoEspecifico
 ,CD.Nombre as delito
 ,A.Nombre as area
 ,A.Clave as clavearea
+,RA.u_Nombre as 'MP'
+,RA.u_Puesto
 ,(CASE 
         WHEN (CD.AltoImpacto = 1) THEN 'ALTO'
                                   ELSE 'BAJO' 
     END) as Impacto
+--,* 
+,UPPER(V.victimas) as victimas
+--,CR.ClasificacionPersona
+,RH.FechaHoraSuceso
+,CONCAT(DD.Calle,' ',DD.NoInt,' ', [DD].[NoExt],' ',DD.Localidad ) as 'LugarDelito'
 FROM NUC N
 LEFT JOIN CAT_RHECHO RH ON n.idNuc = RH.NucId
 LEFT JOIN C_DISTRITO D ON N.DistritoId= D.IdDistrito
 LEFT JOIN CAT_RDH RDH ON RDH.RHechoId= RH.IdRHecho
+LEFT JOIN CAT_RATENCON RA ON RH.RAtencionId=RA.IdRAtencion
 LEFT JOIN C_DELITO CD ON CD.IdDelito= RDH.DelitoId
 LEFT JOIN C_AGENCIA A ON N.AgenciaId= A.IdAgencia
-WHERE RH.FechaReporte=:FECHA"
-;
+LEFT JOIN (SELECT RAtencionId,STRING_AGG(CONCAT(Nombre,' ',ApellidoPaterno,' ',ApellidoMaterno),';') victimas FROM CAT_RAP
+INNER JOIN CAT_PERSONA ON PersonaId=IdPersona WHERE ClasificacionPersona LIKE 'Victima%' group by RAtencionId) AS V ON V.RAtencionId=RA.IdRAtencion
+LEFT JOIN CAT_DIRECCION_DELITO DD ON DD.RHechoId=RH.IdRHecho
+WHERE RA.FechaHoraRegistro BETWEEN :FECHAINICIO AND  :FECHAFIN
+ORDER BY N.nucg ASC";
+
+
+
 echo "<table>";
-echo "<thead><tr><td>NUC</td><td>Agencia</td><td>Fecha Reporte</td><td>Delito Especifico</td><td>Delito</td><td>Area</td><td>Clave Area</td><td>Nivel Impacto</td></tr></thead>";
+echo "<thead><tr><td>NUC</td><td>Agencia</td><td>Fecha Reporte</td><td>Delito Especifico</td><td>Delito</td><td>Area</td><td>Clave Area</td><td>MP</td><td>Puesto</td><td>Nivel Impacto</td><td>Victimas</td><td>Fecha Hora Suceso</td><td>Lugar Delito</td></tr></thead>";
 echo "<tbody>";
 
 foreach($conexionesDistritos as $distrito => $direccion)
@@ -60,12 +74,14 @@ foreach($conexionesDistritos as $distrito => $direccion)
     if($server!= false)
     {
         $qReporte=$server->prepare($sqlDelitos);
-        $qReporte->bindParam(':FECHA', $fecha, PDO::PARAM_STR);
+        //$qReporte->bindParam(':FECHA', $fecha, PDO::PARAM_STR);
+        $qReporte->bindParam(':FECHAINICIO',$fechaInicio, PDO::PARAM_STR);
+        $qReporte->bindParam(':FECHAFIN', $fechaFinal, PDO::PARAM_STR);
         $qReporte->execute();
         
             while($grid=$qReporte->fetch(PDO::FETCH_ASSOC))
             {
-                print utf8_decode( "<tr><td>".$grid['NUC']."</td><td>".$grid['agencia']."</td><td>".$grid['FechaReporte']."</td><td>".$grid['DelitoEspecifico']."</td><td>".$grid['delito']."</td><td>".$grid['area']."</td><td>".$grid['aclavearearea']."</td><td>".$grid['Impacto']."</td></tr>");
+                print utf8_decode( "<tr><td>".$grid['NUC']."</td><td>".$grid['agencia']."</td><td>".$grid['FechaReporte']."</td><td>".$grid['DelitoEspecifico']."</td><td>".$grid['delito']."</td><td>".$grid['area']."</td><td>".$grid['clavearea']."</td><td>".$grid['MP']."</td><td>".$grid['u_Puesto']."</td><td>".$grid['Impacto']."</td><td>".$grid['victimas']."</td><td>".$grid['FechaHoraSuceso']."</td><td>".$grid['LugarDelito']."</td></tr>");
             }
         
     }

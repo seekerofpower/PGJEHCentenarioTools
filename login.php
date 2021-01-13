@@ -6,7 +6,7 @@ $menu = file_get_contents('assets/templates/leftMenuLogin.html', FALSE);
 //CARGAR EL CUERPO PRINCIPAL DE LA PÁGINA
 $main = file_get_contents('assets/templates/pageLogin.html', FALSE);
 //CARGAR EL CONTENIDO DEL MODULO EN GENERAL
-$reporte = file_get_contents('assets/templates/login.html.html', FALSE);
+$reporte = file_get_contents('assets/templates/login.html', FALSE);
 
 //AGREGAR HOJAS DE ESTILO PROPIAS
 $estilos=array();
