@@ -33,7 +33,7 @@ $(document).ready(function()
         }
         else
         {
-            $.redirect('services/infoReporteDiario.php', {'fechainicio': $("#fechaInicio").val(), 'fechafin': $("#fechaFin").val()},"POST","_blank");
+            $.redirect('services/infoReporteDiario.php', {'fechainicio': $("#fechaInicio").val(), 'fechafin': $("#fechaFin").val()},"POST");
         }
 
       });

@@ -12,16 +12,16 @@ if (isset($_SESSION['user']))
     //CARGAR EL CUERPO PRINCIPAL DE LA PÁGINA
     $main = file_get_contents('assets/templates/mainPage.html', FALSE);
     //CARGAR EL CONTENIDO DEL MODULO EN GENERAL
-    $reporte = file_get_contents('assets/templates/reporte.html', FALSE);
+    $reporte = file_get_contents('assets/templates/inicio.html', FALSE);
 
     //COLOCAR EL MENU PROCESASDO EN EL CUERPO DE LA PAGINA
     $main = str_replace("++++MENU++++", $menu, $main);
     //COLOCAR EL CONTENIDO DEL MODULO EN EL CUERPO
     $main = str_replace("++++CONTENIDO++++",$reporte, $main);
     //CAMBIAR TITULO
-    $main = str_replace("++++TITULO++++","REPORTE DIARIO DE CARPETAS", $main);
+    $main = str_replace("++++TITULO++++","HERRAMIENTAS PARA EL SISTEMA CENTENARIO", $main);
     //CAMBIAR DESCRIPCION
-    $main = str_replace("++++DESCRIPCION++++","Se puede generar un archivo de hoja de cálculo de las carpetas genreradas en todos los servidores", $main);
+    $main = str_replace("++++DESCRIPCION++++","Este sistema incluye un conjunto de herramientas para el sistema Centenario", $main);
     echo $main;
 }
 else

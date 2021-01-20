@@ -24,7 +24,7 @@ $conexionesDistritos = array
     "METZTITLAN"=>  "172.16.194.11"
 );
 $fechaInicio=filter_input(INPUT_POST, 'fechainicio', FILTER_SANITIZE_STRING)." 00:00:00";
-$fechaFinal=filter_input(INPUT_POST, 'fechafin', FILTER_SANITIZE_STRING)." 23:59:59";;
+$fechaFinal=filter_input(INPUT_POST, 'fechafin', FILTER_SANITIZE_STRING)." 23:59:59";
 $sqlDelitos="SELECT 
 N.nucg AS NUC
 ,D.Nombre as agencia
