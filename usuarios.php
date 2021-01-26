@@ -34,7 +34,7 @@ if (isset($_SESSION['user']))
     //COLOCAR EL CONTENIDO DEL MODULO EN EL CUERPO
     $main = str_replace("++++CONTENIDO++++",$reporte, $main);
     //CAMBIAR TITULO
-    $main = str_replace("++++TITULO++++","MANEJO DE NUCs", $main);
+    $main = str_replace("++++TITULO++++","MANEJO DE USUARIOS", $main);
     //CAMBIAR DESCRIPCION
     $main = str_replace("++++DESCRIPCION++++","Se pueden Eliminar, revisar y modificar NUCs", $main);
     echo $main;

@@ -1,0 +1,35 @@
+<!-- Large modal -->
+
+<div class="modal fade bd-example-modal-lg"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Borrar NUC</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Borrar un NUC no tiene vuelta atrás</p>
+                <div  class="row">
+                    <div class="col-md-7">
+                        <div class="form-check">
+                            <innpt type="hidden"  id="hdNuc">
+                            <input type="hidden" id="hdRac">
+                            <input type="hidden" id="hdHecho"> 
+                            <input type="hidden" id="hdAtencion">
+
+                            <input id="borradoCompleto" type="checkbox" value="checked"  class="form-check-input"><label class="form-check-label" for="closeButton">
+                                    Eliminar  Información de RAC también
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancelarBorrar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" id="botonBorrar" class="btn btn-danger">Borrar</button>
+            </div>
+        </div>
+    </div>
+</div>
